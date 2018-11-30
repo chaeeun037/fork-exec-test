@@ -1,6 +1,6 @@
-const express = require('express')
-const app = express()
-const getPort = require('get-port')
+const express = require('express');
+const app = express();
+const getPort = require('get-port');
 const host = process.env.HOST || '127.0.0.1';
 
 (async () => {
@@ -14,8 +14,9 @@ const host = process.env.HOST || '127.0.0.1';
   } catch (e) {
     console.error(e)
   }
-})()
+})();
 
-app.get('/', (req, res) => res.send('Hello World!'))
-
+app.get('/health', (req, res) => {
+  res.status(200).json({ health: true });
+});
 
