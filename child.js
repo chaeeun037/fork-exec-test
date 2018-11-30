@@ -8,6 +8,10 @@ const host = process.env.HOST || '127.0.0.1';
     let port = await getPort();
     app.set('port', port)
 
+    process.on('message', (msg) => {
+      console.log(msg);
+    })
+
     app.listen(port, host)
     console.log('Child listening on ' + host + ':' + port)
     
