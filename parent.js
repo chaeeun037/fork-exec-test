@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { fork } = require('child_process');
+const { spawn } = require('child_process');
 const app = express();
 const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3100;
@@ -19,9 +19,17 @@ app.post('/fork', (req, res) => {
   if (!DOOR_ID) {
     return res.status(400).json( {error: "No DOOR_ID"} );
   }
+  
+  const subprocess = spawn(process.argv[0], ['child.js'], {
+    env: {
+      COMPANY_ID: COMPANY_ID,
+      DOOR_ID: DOOR_ID
+    },
+    detached: true
+  });
+  res.status(200).json({ COMPANY_ID: COMPANY_ID, DOOR_ID: DOOR_ID });
 
-  const forked = fork('child.js');
-  forked.send({ COMPANY_ID, DOOR_ID });
+  subprocess.unref();
 });
 
 app.listen(port, host);

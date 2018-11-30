@@ -6,17 +6,15 @@ const host = process.env.HOST || '127.0.0.1';
 (async () => {
   try{
     let port = await getPort();
-    app.set('port', port)
+    app.set('port', port);
 
-    process.on('message', (msg) => {
-      console.log(msg);
-    })
+    console.log('Child COMPANY_ID: ' + process.env.COMPANY_ID, 'Child DOOR_ID: ' + process.env.DOOR_ID, 'detached? ' + process.detached);
 
-    app.listen(port, host)
-    console.log('Child listening on ' + host + ':' + port)
+    app.listen(port, host);
+    console.log('Child listening on ' + host + ':' + port);
     
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
 })();
 
